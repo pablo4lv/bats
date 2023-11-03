@@ -1,0 +1,10 @@
+editar registro en UsuarioAGyRP
+cambiar ip y dns
+
+nombre eqp
+netdom renamecomputer %COMPUTERNAME% /NewName:NuevoNombre /UserD:UsuarioAdmin /PasswordD:ContraseñaAdmin /Reboot:0
+
+
+dominio¿?
+validadora capaz?
+bat de serial?
