@@ -35,7 +35,7 @@ net user redpagos !rp!
 
 ren "C:\Users\!actual!" "AG!nuevo!"
 
-rem Falta editar el registro
+rem Falta editar el registro\\
 
 
 pause
