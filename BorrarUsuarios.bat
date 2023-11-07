@@ -11,6 +11,10 @@ rem Eliminar los usuarios ingresados
 for %%u in (%usuarios%) do (
     net user %%u /delete
     if !errorlevel! equ 0 (
+	rmdir /s /q "C:\Users\%%u"
+
+	reg delete "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList" /f /v "%%u" 
+
         echo El usuario %%u se ha eliminado con éxito.
     ) else (
         echo Error al eliminar el usuario %%u.

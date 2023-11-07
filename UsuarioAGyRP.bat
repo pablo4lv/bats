@@ -33,7 +33,7 @@ if !errorlevel! equ 0 (
 
 net user redpagos !rp!
 
-ren "C:\Users\!actual!" "!nuevo!"
+ren "C:\Users\!actual!" "AG!nuevo!"
 
 rem Falta editar el registro
 
