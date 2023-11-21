@@ -1,0 +1,49 @@
+@echo off
+setlocal enabledelayedexpansion
+
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Este script debe ejecutarse como administrador.
+    pause
+    exit /b
+) 
+
+net user
+echo -------------------------------------------------------------------------------
+echo.
+
+set /p "actual=Ingresa el usuario a modificar: "
+set /p "nuevo=Numero de agencia a configurar: "
+set /p "rp=Ingresa la nueva contraseña del usuario redpagos: "
+
+wmic useraccount where "Name='!actual!'" rename "AG!nuevo!"
+
+if !errorlevel! equ 0 (
+    net user "AG!nuevo!" /fullname:"AG!nuevo!" /comment:"AG!nuevo!"
+    net user "AG!nuevo!" "!nuevo!"
+
+    if !errorlevel! equ 0 (
+        echo El usuario, contraseña, nombre completo y descripcion se cambiaron a !nuevo! correctamente.
+    ) else (
+        echo Error al cambiar el nombre completo y la descripción.
+    )
+) else (
+    echo Error al cambiar el nombre de usuario.
+)
+
+net user redpagos !rp!
+
+ren "C:\Users\!actual!" "AG!nuevo!"
+
+REM Buscar el SID del usuario
+for /F "tokens=2" %%a in ('wmic useraccount where "Name='!actual!'" get sid /value ^| findstr "="') do (
+    set "sid=%%a"
+)
+
+REM Modificar el registro para actualizar la ruta del perfil de usuario
+powershell -Command "Set-ItemProperty -Path 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\!sid!' -Name 'ProfileImagePath' -Value 'C:\Users\AG!nuevo!'"
+
+pause
+
+endlocal
+
